@@ -1,7 +1,7 @@
 # django-todo
 A simple todo app built with django
 
-![todo App](https://raw.githubusercontent.com/shreys7/django-todo/develop/staticfiles/todoApp.png)
+![todo App](https://raw.githubusercontent.com/shreys7/django-todo/develop/staticfiles/magdan.png)
 ### Setup
 Update the System
 ```bash
@@ -44,6 +44,6 @@ That was pretty simple, right? Now let's make the App live. We just need to star
 python3 manage.py runserver
 ```
 
-Once the server is hosted, head over to http://127.0.0.1:8000/todos for the App.
+Once the server is hosted, head over to http://127.0.0.1:8000/ for the App.
 
 Cheers and Happy Coding :)
