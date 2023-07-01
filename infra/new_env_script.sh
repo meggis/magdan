@@ -1,0 +1,1 @@
+cp /infra/id_rsa.pub /.ssh/
