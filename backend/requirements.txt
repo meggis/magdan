@@ -1,0 +1,9 @@
+uuid==1.30
+Django==3.2.9
+django-cors-headers==3.11.0
+django-environ==0.8.1
+django-grappelli==2.15.3
+djangorestframework==3.13.1
+psycopg2==2.9.2
+pycparser==2.21
+django-grappelli==2.15.3
