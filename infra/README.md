@@ -12,5 +12,6 @@
 5. venv/bin/activate
 6. pip install django
 7. sudo apt-get install libpq-dev
-
+mkdir /home/ubuntu/magdan/backend/staticfiles
+python ./manage.py collectstatic
 7. nohup python3 manage.py runserver 0.0.0.0:8000 & or (python3 manage.py runserver 0.0.0.0:8000)
