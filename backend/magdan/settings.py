@@ -20,10 +20,12 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     "grappelli",
+    'drf_yasg',
     'django.contrib.admin',
     "rest_framework",
     "rest_framework.authtoken",
     'user.apps.UserConfig',
+    'posts.apps.PostConfig',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',

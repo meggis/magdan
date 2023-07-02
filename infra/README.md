@@ -14,4 +14,6 @@
 7. sudo apt-get install libpq-dev
 mkdir /home/ubuntu/magdan/backend/staticfiles
 python ./manage.py collectstatic
+pip install drf-yasg
+
 7. nohup python3 manage.py runserver 0.0.0.0:8000 & or (python3 manage.py runserver 0.0.0.0:8000)

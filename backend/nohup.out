@@ -1,0 +1,253 @@
+Watching for file changes with StatReloader
+Error: That port is already in use.
+Watching for file changes with StatReloader
+[02/Jul/2023 04:56:04] "GET /admin/auth/user/ HTTP/1.1" 200 16204
+[02/Jul/2023 04:56:04] "GET /static/grappelli/jquery/ui/jquery-ui.min.css HTTP/1.1" 304 0
+[02/Jul/2023 04:56:04] "GET /static/grappelli/stylesheets/screen.css HTTP/1.1" 304 0
+[02/Jul/2023 04:56:04] "GET /static/grappelli/stylesheets/mueller/grid/output.css HTTP/1.1" 304 0
+[02/Jul/2023 04:56:04] "GET /static/grappelli/jquery/jquery.min.js HTTP/1.1" 304 0
+[02/Jul/2023 04:56:04] "GET /static/grappelli/jquery/jquery-migrate-3.0.1.min.js HTTP/1.1" 304 0
+[02/Jul/2023 04:56:04] "GET /static/grappelli/jquery/ui/jquery-ui.min.js HTTP/1.1" 304 0
+[02/Jul/2023 04:56:04] "GET /admin/jsi18n/ HTTP/1.1" 200 3195
+[02/Jul/2023 04:56:04] "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 304 0
+[02/Jul/2023 04:56:04] "GET /static/grappelli/js/grappelli.min.js HTTP/1.1" 304 0
+[02/Jul/2023 04:56:04] "GET /static/admin/js/jquery.init.js HTTP/1.1" 304 0
+[02/Jul/2023 04:56:04] "GET /static/admin/js/core.js HTTP/1.1" 304 0
+[02/Jul/2023 04:56:04] "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 304 0
+[02/Jul/2023 04:56:04] "GET /static/admin/js/actions.js HTTP/1.1" 304 0
+[02/Jul/2023 04:56:04] "GET /static/admin/js/prepopulate.js HTTP/1.1" 304 0
+[02/Jul/2023 04:56:04] "GET /static/admin/js/urlify.js HTTP/1.1" 304 0
+[02/Jul/2023 04:56:04] "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 304 0
+[02/Jul/2023 04:56:04] "GET /static/grappelli/images/icons-s79f97b581c.png HTTP/1.1" 304 0
+[02/Jul/2023 04:56:04] "GET /static/grappelli/images/backgrounds/changelist-results.png HTTP/1.1" 304 0
+[02/Jul/2023 04:56:04] "GET /static/grappelli/images/icons/form-select.png HTTP/1.1" 304 0
+[02/Jul/2023 04:56:06] "GET /admin/auth/ HTTP/1.1" 200 7900
+[02/Jul/2023 04:56:06] "GET /static/grappelli/images/icons-small-sf6f04fa616.png HTTP/1.1" 304 0
+[02/Jul/2023 04:56:48] "GET /admin/ HTTP/1.1" 200 11845
+/home/ubuntu/magdan/backend/user/views/details_view.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+July 02, 2023 - 04:55:52
+Django version 3.2.9, using settings 'magdan.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+Watching for file changes with StatReloader
+[02/Jul/2023 05:06:02] "GET /user/details/ HTTP/1.1" 200 95
+[02/Jul/2023 05:06:04] "GET /user/details/ HTTP/1.1" 200 95
+/home/ubuntu/magdan/backend/magdan/urls.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+July 02, 2023 - 05:05:59
+Django version 3.2.9, using settings 'magdan.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+Watching for file changes with StatReloader
+/home/ubuntu/magdan/backend/magdan/settings.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+July 02, 2023 - 05:09:51
+Django version 3.2.9, using settings 'magdan.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+Watching for file changes with StatReloader
+/home/ubuntu/magdan/backend/posts/urls.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+July 02, 2023 - 05:09:53
+Django version 3.2.9, using settings 'magdan.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+Watching for file changes with StatReloader
+System check identified some issues:
+
+WARNINGS:
+?: (2_0.W001) Your URL pattern 'post/(?P<session_id>[^/.]+)' [name='one_post'] has a route that contains '(?P<', begins with a '^', or ends with a '$'. This was likely an oversight when migrating to django.urls.path().
+
+System check identified 1 issue (0 silenced).
+/home/ubuntu/magdan/backend/posts/urls.py changed, reloading.
+Performing system checks...
+
+July 02, 2023 - 05:10:32
+Django version 3.2.9, using settings 'magdan.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+Watching for file changes with StatReloader
+Exception in thread django-main-thread:
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.10/threading.py", line 953, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/ubuntu/magdan/backend/venv/lib/python3.10/site-packages/django/utils/autoreload.py", line 64, in wrapper
+    fn(*args, **kwargs)
+  File "/home/ubuntu/magdan/backend/venv/lib/python3.10/site-packages/django/core/management/commands/runserver.py", line 118, in inner_run
+    self.check(display_num_errors=True)
+  File "/home/ubuntu/magdan/backend/venv/lib/python3.10/site-packages/django/core/management/base.py", line 419, in check
+    all_issues = checks.run_checks(
+  File "/home/ubuntu/magdan/backend/venv/lib/python3.10/site-packages/django/core/checks/registry.py", line 76, in run_checks
+    new_errors = check(app_configs=app_configs, databases=databases)
+  File "/home/ubuntu/magdan/backend/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 13, in check_url_config
+    return check_resolver(resolver)
+  File "/home/ubuntu/magdan/backend/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 23, in check_resolver
+    return check_method()
+  File "/home/ubuntu/magdan/backend/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 412, in check
+    for pattern in self.url_patterns:
+  File "/home/ubuntu/magdan/backend/venv/lib/python3.10/site-packages/django/utils/functional.py", line 48, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/ubuntu/magdan/backend/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 598, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "/home/ubuntu/magdan/backend/venv/lib/python3.10/site-packages/django/utils/functional.py", line 48, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/ubuntu/magdan/backend/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 591, in urlconf_module
+    return import_module(self.urlconf_name)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/ubuntu/magdan/backend/magdan/urls.py", line 30, in <module>
+    path('posts/',include('posts.urls')),
+  File "/home/ubuntu/magdan/backend/venv/lib/python3.10/site-packages/django/urls/conf.py", line 34, in include
+    urlconf_module = import_module(urlconf_module)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/ubuntu/magdan/backend/posts/urls.py", line 8, in <module>
+    path("post/(?P<session_id>[^/.]+)", DetailsView.as_view(), name="one_post"),
+NameError: name 'DetailsView' is not defined
+/home/ubuntu/magdan/backend/posts/urls.py changed, reloading.
+Performing system checks...
+
+Watching for file changes with StatReloader
+System check identified some issues:
+
+WARNINGS:
+?: (2_0.W001) Your URL pattern 'post/(?P<session_id>[^/.]+)' [name='one_post'] has a route that contains '(?P<', begins with a '^', or ends with a '$'. This was likely an oversight when migrating to django.urls.path().
+
+System check identified 1 issue (0 silenced).
+[02/Jul/2023 05:16:15] "GET /admin/ HTTP/1.1" 200 12684
+[02/Jul/2023 05:16:15] "GET /static/grappelli/stylesheets/screen.css HTTP/1.1" 304 0
+[02/Jul/2023 05:16:15] "GET /static/grappelli/jquery/ui/jquery-ui.min.css HTTP/1.1" 304 0
+[02/Jul/2023 05:16:15] "GET /static/grappelli/jquery/jquery-migrate-3.0.1.min.js HTTP/1.1" 304 0
+[02/Jul/2023 05:16:15] "GET /static/grappelli/jquery/jquery.min.js HTTP/1.1" 304 0
+[02/Jul/2023 05:16:15] "GET /static/grappelli/stylesheets/mueller/grid/output.css HTTP/1.1" 304 0
+[02/Jul/2023 05:16:15] "GET /static/grappelli/jquery/ui/jquery-ui.min.js HTTP/1.1" 304 0
+[02/Jul/2023 05:16:16] "GET /static/grappelli/js/grappelli.min.js HTTP/1.1" 304 0
+[02/Jul/2023 05:16:16] "GET /static/grappelli/images/icons-small-sf6f04fa616.png HTTP/1.1" 304 0
+[02/Jul/2023 05:16:16] "GET /admin/ HTTP/1.1" 200 12684
+Internal Server Error: /admin/posts/postmodel/
+Traceback (most recent call last):
+  File "/home/ubuntu/magdan/backend/venv/lib/python3.10/site-packages/django/db/backends/utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "/home/ubuntu/magdan/backend/venv/lib/python3.10/site-packages/django/db/backends/sqlite3/base.py", line 423, in execute
+    return Database.Cursor.execute(self, query, params)
+sqlite3.OperationalError: no such table: posts_postmodel
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/ubuntu/magdan/backend/venv/lib/python3.10/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/ubuntu/magdan/backend/venv/lib/python3.10/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/ubuntu/magdan/backend/venv/lib/python3.10/site-packages/django/contrib/admin/options.py", line 616, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+  File "/home/ubuntu/magdan/backend/venv/lib/python3.10/site-packages/django/utils/decorators.py", line 130, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "/home/ubuntu/magdan/backend/venv/lib/python3.10/site-packages/django/views/decorators/cache.py", line 44, in _wrapped_view_func
+    response = view_func(request, *args, **kwargs)
+  File "/home/ubuntu/magdan/backend/venv/lib/python3.10/site-packages/django/contrib/admin/sites.py", line 232, in inner
+    return view(request, *args, **kwargs)
+  File "/home/ubuntu/magdan/backend/venv/lib/python3.10/site-packages/django/utils/decorators.py", line 43, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "/home/ubuntu/magdan/backend/venv/lib/python3.10/site-packages/django/utils/decorators.py", line 130, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "/home/ubuntu/magdan/backend/venv/lib/python3.10/site-packages/django/contrib/admin/options.py", line 1697, in changelist_view
+    cl = self.get_changelist_instance(request)
+  File "/home/ubuntu/magdan/backend/venv/lib/python3.10/site-packages/django/contrib/admin/options.py", line 736, in get_changelist_instance
+    return ChangeList(
+  File "/home/ubuntu/magdan/backend/venv/lib/python3.10/site-packages/django/contrib/admin/views/main.py", line 100, in __init__
+    self.get_results(request)
+  File "/home/ubuntu/magdan/backend/venv/lib/python3.10/site-packages/django/contrib/admin/views/main.py", line 235, in get_results
+    result_count = paginator.count
+  File "/home/ubuntu/magdan/backend/venv/lib/python3.10/site-packages/django/utils/functional.py", line 48, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/ubuntu/magdan/backend/venv/lib/python3.10/site-packages/django/core/paginator.py", line 97, in count
+    return c()
+  File "/home/ubuntu/magdan/backend/venv/lib/python3.10/site-packages/django/db/models/query.py", line 412, in count
+    return self.query.get_count(using=self.db)
+  File "/home/ubuntu/magdan/backend/venv/lib/python3.10/site-packages/django/db/models/sql/query.py", line 519, in get_count
+    number = obj.get_aggregation(using, ['__count'])['__count']
+  File "/home/ubuntu/magdan/backend/venv/lib/python3.10/site-packages/django/db/models/sql/query.py", line 504, in get_aggregation
+    result = compiler.execute_sql(SINGLE)
+  File "/home/ubuntu/magdan/backend/venv/lib/python3.10/site-packages/django/db/models/sql/compiler.py", line 1175, in execute_sql
+    cursor.execute(sql, params)
+  File "/home/ubuntu/magdan/backend/venv/lib/python3.10/site-packages/django/db/backends/utils.py", line 98, in execute
+    return super().execute(sql, params)
+  File "/home/ubuntu/magdan/backend/venv/lib/python3.10/site-packages/django/db/backends/utils.py", line 66, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "/home/ubuntu/magdan/backend/venv/lib/python3.10/site-packages/django/db/backends/utils.py", line 75, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/home/ubuntu/magdan/backend/venv/lib/python3.10/site-packages/django/db/backends/utils.py", line 79, in _execute
+    with self.db.wrap_database_errors:
+  File "/home/ubuntu/magdan/backend/venv/lib/python3.10/site-packages/django/db/utils.py", line 90, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/home/ubuntu/magdan/backend/venv/lib/python3.10/site-packages/django/db/backends/utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "/home/ubuntu/magdan/backend/venv/lib/python3.10/site-packages/django/db/backends/sqlite3/base.py", line 423, in execute
+    return Database.Cursor.execute(self, query, params)
+django.db.utils.OperationalError: no such table: posts_postmodel
+[02/Jul/2023 05:16:18] "GET /admin/posts/postmodel/ HTTP/1.1" 500 175364
+[02/Jul/2023 05:16:49] "GET /admin/posts/postmodel/ HTTP/1.1" 200 10509
+[02/Jul/2023 05:16:49] "GET /static/admin/js/core.js HTTP/1.1" 304 0
+[02/Jul/2023 05:16:49] "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 304 0
+[02/Jul/2023 05:16:49] "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 304 0
+[02/Jul/2023 05:16:49] "GET /static/admin/js/jquery.init.js HTTP/1.1" 304 0
+[02/Jul/2023 05:16:49] "GET /static/admin/js/actions.js HTTP/1.1" 304 0
+[02/Jul/2023 05:16:49] "GET /admin/jsi18n/ HTTP/1.1" 200 3195
+[02/Jul/2023 05:16:49] "GET /static/admin/js/urlify.js HTTP/1.1" 304 0
+[02/Jul/2023 05:16:49] "GET /static/admin/js/prepopulate.js HTTP/1.1" 304 0
+[02/Jul/2023 05:16:49] "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 304 0
+[02/Jul/2023 05:16:49] "GET /static/grappelli/images/icons-s79f97b581c.png HTTP/1.1" 304 0
+[02/Jul/2023 05:16:49] "GET /static/grappelli/images/icons/form-select.png HTTP/1.1" 304 0
+[02/Jul/2023 05:16:50] "GET /admin/posts/postmodel/ HTTP/1.1" 200 10509
+[02/Jul/2023 05:16:50] "GET /admin/jsi18n/ HTTP/1.1" 200 3195
+[02/Jul/2023 05:16:51] "GET /admin/posts/postmodel/add/ HTTP/1.1" 200 16715
+[02/Jul/2023 05:16:52] "GET /admin/jsi18n/ HTTP/1.1" 200 3195
+[02/Jul/2023 05:17:09] "POST /admin/posts/postmodel/add/ HTTP/1.1" 302 0
+[02/Jul/2023 05:17:10] "GET /admin/posts/postmodel/ HTTP/1.1" 200 12348
+[02/Jul/2023 05:17:10] "GET /admin/jsi18n/ HTTP/1.1" 200 3195
+[02/Jul/2023 05:17:10] "GET /static/grappelli/images/backgrounds/changelist-results.png HTTP/1.1" 304 0
+[02/Jul/2023 05:17:11] "GET /admin/posts/postmodel/1/change/ HTTP/1.1" 200 17096
+[02/Jul/2023 05:17:12] "GET /admin/jsi18n/ HTTP/1.1" 200 3195
+/home/ubuntu/magdan/backend/posts/urls.py changed, reloading.
+Performing system checks...
+
+July 02, 2023 - 05:16:09
+Django version 3.2.9, using settings 'magdan.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+Watching for file changes with StatReloader
+System check identified some issues:
+
+WARNINGS:
+?: (2_0.W001) Your URL pattern 'post/(?P<post_id>[^/.]+)' [name='one_post'] has a route that contains '(?P<', begins with a '^', or ends with a '$'. This was likely an oversight when migrating to django.urls.path().
+
+System check identified 1 issue (0 silenced).
+Not Found: /posts/post/fb59e841-7045-4120-a19b-e7011d7126b8
+[02/Jul/2023 05:22:02] "GET /posts/post/fb59e841-7045-4120-a19b-e7011d7126b8 HTTP/1.1" 404 3317
+Watching for file changes with StatReloader
+[02/Jul/2023 06:02:12] "GET /posts HTTP/1.1" 301 0
+[02/Jul/2023 06:02:12] "GET /posts/ HTTP/1.1" 200 246
