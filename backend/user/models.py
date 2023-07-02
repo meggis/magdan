@@ -36,5 +36,3 @@ class MagdanUser(models.Model):
     class Meta:
         app_label = "user"
         ordering = ["user"]
-        indexes = (GinIndex(fields=["display_name"]),)
-
