@@ -1,12 +1,15 @@
 import { ajax } from 'rxjs/ajax';
 
-export const login = ({ user, password }: { user: string; password: string }) => {
+export const login = ({ token }: { token: string }) => {
 	return ajax({
-		url: `${process.env.REACT_APP_USER_INFO_API}/login`,
-		method: 'POST',
-		body: {
-			user,
-			password,
+		url: `http://localhost:8000/user/details/`,
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: `Token ${token}`
 		},
+		// body: {
+		// 	token
+		// },
 	});
 };

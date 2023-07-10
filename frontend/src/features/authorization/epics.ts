@@ -12,26 +12,15 @@ export const Login: AppEpic<ReturnType<typeof login>> = (action$, state$, { auth
 		filter(login.match),
 		withLatestFrom(state$),
 		switchMap(([action, state]) => {
-			return concat(
-				of(isLoading(true)),
-				// authorization.login(action.payload).pipe(
-				fromPromise(
-					new Promise((resolve, reject) => {
-						setTimeout(() => {
-							resolve({});
-						}, 500);
-					}),
-				).pipe(
-					switchMap((AjaxResponse: any) => {
-						window.location.replace('/');
-						localStorage.setItem('id', 'example_id');
-						return concat(of(setIsLogged({ isLogged: true })));
-					}),
-					catchError((err: any) => {
-						return concat(of(setIsLogged({ isLogged: false })));
-					}),
-				),
-			);
+			console.log(action.payload)
+			return authorization.login({token: action.payload.token}).pipe(switchMap((AjaxResponse: any) => {
+				const {response} = AjaxResponse;
+				console.log(response)
+				return concat(of(setIsLogged({ isLogged: true })));
+			}),
+			catchError((err: any) => {
+				return concat(of(setIsLogged({ isLogged: false })));
+			}))
 		}),
 	);
 

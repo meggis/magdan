@@ -79,7 +79,6 @@ const Login = () => {
 										<FormControl isInvalid={isInvalidToken} mb="15px">
 											<InputGroup display="flex" flexDirection="column" gap="5">
 												<Input
-													isDisabled={loading}
 													type="text"
 													isInvalid={isInvalidToken}
 													errorBorderColor="red.300"
@@ -89,26 +88,15 @@ const Login = () => {
 													bg="white"
 													placeholder="Login"
 												/>
-												<Input
-													isDisabled={loading}
-													type="password"
-													isInvalid={isInvalidToken}
-													errorBorderColor="red.300"
-													onChange={ev => {
-														handleLoginData({ ...loginData, password: ev.target.value });
-													}}
-													bg="white"
-													placeholder="Password"
-												/>
 											</InputGroup>
 											<FormErrorMessage pos="absolute">Invalid password or login</FormErrorMessage>
 										</FormControl>
 										<Button
-											isDisabled={loading || !loginData.user || !loginData.password}
+											isDisabled={loading || !loginData.user}
 											isLoading={loading}
 											type="submit"
 											onClick={() => {
-												dispatch(login(loginData));
+												dispatch(login({token: loginData.user}));
 											}}
 											variant="primary"
 										>
