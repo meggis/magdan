@@ -5,8 +5,7 @@ export const login = ({ token }: { token: string }) => {
 		url: `http://localhost:8000/user/details/`,
 		method: 'GET',
 		headers: {
-			'Content-Type': 'application/json',
-			Authorization: `Token ${token}`
+			Authorization: `Token ${token}`,
 		},
 		// body: {
 		// 	token

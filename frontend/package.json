@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "@chakra-ui/pro-theme": "0.0.55",
-    "@chakra-ui/react": "2.2.4",
+    "@chakra-ui/react": "2.4.9",
     "@emotion/react": "11.9.3",
     "@emotion/styled": "11.9.3",
     "@fontsource/inter": "^4.5.13",
