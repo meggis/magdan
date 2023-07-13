@@ -6,23 +6,30 @@ import { concat, EMPTY, of } from 'rxjs';
 import { AppEpic } from '../../utils/reduxUtils';
 import { checkIfLogged, isLoading, login, logout, setIsLogged } from './actions';
 import { fromPromise } from 'rxjs/internal-compatibility';
+// import { useNavigate } from "react-router-dom";
 
 export const Login: AppEpic<ReturnType<typeof login>> = (action$, state$, { authorization }) =>
 	action$.pipe(
 		filter(login.match),
 		withLatestFrom(state$),
 		switchMap(([action, state]) => {
-			console.log(action.payload)
-			return authorization.login({token: action.payload.token}).pipe(switchMap((AjaxResponse: any) => {
-				const {response} = AjaxResponse;
-				console.log(response)
-				return concat(of(setIsLogged({ isLogged: true })));
-			}),
-			catchError((err: any) => {
-				return concat(of(setIsLogged({ isLogged: false })));
-			}))
+			return authorization.login({ token: action.payload.token }).pipe(
+				switchMap((AjaxResponse: any) => {
+					const { response } = AjaxResponse;
+					// mogłbyś wytłumaczyć dlaczego nie byłam w stanie osiągnąc tego samego efektu przez useNavigation() hooka?
+					// const navigate: Function = () => { useNavigate() };
+					// navigate("/");
+					window.location.replace('/');
+					localStorage.setItem('id', response);
+					return concat(of(setIsLogged({ isLogged: true })));
+				}),
+				catchError((err: any) => {
+					return concat(of(setIsLogged({ isLogged: false })));
+				}),
+			);
 		}),
 	);
+// magda@545ee029-4527-43f3-bce8-053c55de2a43
 
 export const Logout: AppEpic<ReturnType<typeof logout>> = (action$, state$, { authorization }) =>
 	action$.pipe(
