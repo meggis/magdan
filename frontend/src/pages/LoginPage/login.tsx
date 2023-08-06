@@ -1,16 +1,22 @@
 import { Button, Container, Input, Stack, Heading, Flex, Text, InputGroup, Box, FormControl, FormErrorMessage, Image } from '@chakra-ui/react';
 import { CSSTransition } from 'react-transition-group';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../utils/reduxUtils';
 import { login } from '../../features/authorization/actions';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
 	const [loginData, handleLoginData] = useState({ user: '', password: '' });
 
 	const isInvalidToken = false;
-	const { loading } = useAppSelector(state => state.authorization);
+	const { loading, isLogged } = useAppSelector(state => state.authorization);
 	const dispatch = useAppDispatch();
-
+	const navigate = useNavigate();
+	useEffect(() => {
+		if (isLogged) {
+			navigate('/', { replace: true });
+		}
+	}, [isLogged]);
 	const opacityTime = '1s';
 
 	return (
@@ -96,7 +102,7 @@ const Login = () => {
 											isLoading={loading}
 											type="submit"
 											onClick={() => {
-												dispatch(login({token: loginData.user}));
+												dispatch(login({ token: loginData.user }));
 											}}
 											variant="primary"
 										>

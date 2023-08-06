@@ -5,27 +5,24 @@ import { catchError, delay, filter, switchMap, withLatestFrom } from 'rxjs/opera
 import { concat, EMPTY, of } from 'rxjs';
 import { AppEpic } from '../../utils/reduxUtils';
 import { checkIfLogged, isLoading, login, logout, setIsLogged } from './actions';
-import { fromPromise } from 'rxjs/internal-compatibility';
-// import { useNavigate } from "react-router-dom";
 
 export const Login: AppEpic<ReturnType<typeof login>> = (action$, state$, { authorization }) =>
 	action$.pipe(
 		filter(login.match),
 		withLatestFrom(state$),
 		switchMap(([action, state]) => {
-			return authorization.login({ token: action.payload.token }).pipe(
-				switchMap((AjaxResponse: any) => {
-					const { response } = AjaxResponse;
-					// mogłbyś wytłumaczyć dlaczego nie byłam w stanie osiągnąc tego samego efektu przez useNavigation() hooka?
-					// const navigate: Function = () => { useNavigate() };
-					// navigate("/");
-					window.location.replace('/');
-					localStorage.setItem('id', response);
-					return concat(of(setIsLogged({ isLogged: true })));
-				}),
-				catchError((err: any) => {
-					return concat(of(setIsLogged({ isLogged: false })));
-				}),
+			return concat(
+				of(isLoading(true)),
+				authorization.login({ token: action.payload.token }).pipe(
+					switchMap((AjaxResponse: any) => {
+						localStorage.setItem('token', action.payload.token);
+						return concat(of(isLoading(false)), of(setIsLogged({ isLogged: true })));
+					}),
+					catchError((err: any) => {
+						localStorage.removeItem('token');
+						return concat(of(isLoading(false)), of(setIsLogged({ isLogged: false })));
+					}),
+				),
 			);
 		}),
 	);
@@ -36,9 +33,9 @@ export const Logout: AppEpic<ReturnType<typeof logout>> = (action$, state$, { au
 		filter(logout.match),
 		withLatestFrom(state$),
 		switchMap(([action, state]) => {
-			localStorage.removeItem('id');
+			localStorage.removeItem('token');
 			window.location.replace('/');
-			return EMPTY;
+			return concat(of(setIsLogged({ isLogged: false })));
 		}),
 	);
 
@@ -47,11 +44,12 @@ export const CheckIfLoggedEpic: AppEpic<ReturnType<typeof checkIfLogged>> = (act
 		filter(checkIfLogged.match),
 		withLatestFrom(state$),
 		switchMap(([action, state]) => {
-			const id = localStorage.getItem('id');
-			if (window && window.location.pathname !== '/login' && !id) {
+			const token: any = localStorage.getItem('token');
+			if (window && window.location.pathname !== '/login' && !token) {
 				window.location.replace('/login');
+				return concat(of(setIsLogged({ isLogged: !!token })));
 			}
-			return concat(of(setIsLogged({ isLogged: !!id })));
+			return concat(of(login({ token })));
 		}),
 	);
 
