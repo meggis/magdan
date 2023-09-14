@@ -110,7 +110,7 @@ const Login = () => {
 											<FormErrorMessage pos="absolute">Invalid password or login</FormErrorMessage>
 										</FormControl>
 										<Button
-											isDisabled={loading || !loginData.password}
+											isDisabled={loading || !loginData.password || !loginData.user}
 											isLoading={loading}
 											type="submit"
 											onClick={() => {

@@ -1,10 +1,11 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-nested-ternary */
 import { combineEpics } from 'redux-observable';
-import { catchError, delay, filter, switchMap, withLatestFrom } from 'rxjs/operators';
+import { catchError, delay, filter, switchMap, withLatestFrom, mergeMap } from 'rxjs/operators';
 import { concat, EMPTY, of } from 'rxjs';
 import { AppEpic } from '../../utils/reduxUtils';
 import { checkIfLogged, isLoading, login, logout, setIsLogged } from './actions';
+import { getUserData } from '../user/actions';
 
 export const Login: AppEpic<ReturnType<typeof login>> = (action$, state$, { authorization }) =>
 	action$.pipe(
@@ -15,8 +16,13 @@ export const Login: AppEpic<ReturnType<typeof login>> = (action$, state$, { auth
 				of(isLoading(true)),
 				authorization.login({ token: action.payload.token }).pipe(
 					switchMap((AjaxResponse: any) => {
+						const { response } = AjaxResponse;
 						localStorage.setItem('token', action.payload.token);
-						return concat(of(isLoading(false)), of(setIsLogged({ isLogged: true })));
+						return concat(
+							of(isLoading(false)),
+							of(setIsLogged({ isLogged: true })),
+							of(getUserData({ name: response.first_name, lastName: response.last_name })),
+						);
 					}),
 					catchError((err: any) => {
 						localStorage.removeItem('token');
