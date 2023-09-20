@@ -94,6 +94,7 @@ const Login = () => {
 													}}
 													bg="white"
 													placeholder="Login"
+													name="login"
 												/>
 												<Input
 													id="2"
@@ -105,6 +106,7 @@ const Login = () => {
 													}}
 													bg="white"
 													placeholder="Password"
+													name="password"
 												/>
 											</InputGroup>
 											<FormErrorMessage pos="absolute">Invalid password or login</FormErrorMessage>

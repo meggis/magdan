@@ -6,12 +6,13 @@ import { concat, EMPTY, of } from 'rxjs';
 import { AppEpic } from '../../utils/reduxUtils';
 import { checkIfLogged, isLoading, login, logout, setIsLogged } from './actions';
 import { getUserData } from '../user/actions';
+import { getPostsData, setPostsData } from '../posts/actions';
 
-export const Login: AppEpic<ReturnType<typeof login>> = (action$, state$, { authorization }) =>
+export const Login: AppEpic<ReturnType<typeof login>> = (action$, state$, { authorization, posts }) =>
 	action$.pipe(
 		filter(login.match),
 		withLatestFrom(state$),
-		switchMap(([action, state]) => {
+		mergeMap(([action, state]) => {
 			return concat(
 				of(isLoading(true)),
 				authorization.login({ token: action.payload.token }).pipe(
@@ -22,11 +23,20 @@ export const Login: AppEpic<ReturnType<typeof login>> = (action$, state$, { auth
 							of(isLoading(false)),
 							of(setIsLogged({ isLogged: true })),
 							of(getUserData({ name: response.first_name, lastName: response.last_name })),
+							// of(getPostsData({ token: action.payload.token}))
 						);
 					}),
 					catchError((err: any) => {
 						localStorage.removeItem('token');
 						return concat(of(isLoading(false)), of(setIsLogged({ isLogged: false })));
+					}),
+				),
+				posts.getPostsData({ token: action.payload.token }).pipe(
+					switchMap((AjaxResponse: any) => {
+						return concat(of(setPostsData({ postId: '1' })));
+					}),
+					catchError((err: any) => {
+						return concat(of(setPostsData({ postId: 'there is no such post' })));
 					}),
 				),
 			);
