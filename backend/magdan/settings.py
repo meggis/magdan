@@ -33,6 +33,7 @@ LOGGING = {
 # Application definition
 
 INSTALLED_APPS = [
+    "corsheaders",
     "grappelli",
     'drf_yasg',
     'django.contrib.admin',
@@ -66,7 +67,7 @@ REST_FRAMEWORK = {
 
 AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
-    "user.authentication.MagdanUserBackend",  
+    "user.authentication.MagdanUserBackend",
 ]
 
 ROOT_URLCONF = 'magdan.urls'
@@ -166,10 +167,15 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'staticfiles'),
 )
 
-CORS_ALLOWED_ORIGINS = ["*"]
-CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_REDIRECTS = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://localhost:3001",
+    "https://localhost:3000",
+    "https://localhost:3001",
+]
 CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+CORS_REPLACE_HTTPS_REFERER      = False
 HOST_SCHEME                     = "http://"
 SECURE_PROXY_SSL_HEADER         = None
 SECURE_SSL_REDIRECT             = False
@@ -178,3 +184,4 @@ CSRF_COOKIE_SECURE              = False
 SECURE_HSTS_SECONDS             = None
 SECURE_HSTS_INCLUDE_SUBDOMAINS  = False
 SECURE_FRAME_DENY               = False
+
