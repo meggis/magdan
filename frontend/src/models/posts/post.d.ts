@@ -1,7 +1,3 @@
 export interface IPostModel {
-	postId: string;
-	displayName: string;
-	content: string;
-	author: string;
-	header: string;
+	posts: [] | [{ author: string; content: string; display_name: string; header: string; post_id: string }];
 }

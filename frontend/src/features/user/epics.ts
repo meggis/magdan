@@ -13,7 +13,7 @@ export const getUserDataEpic: AppEpic<ReturnType<typeof getUserData>> = (action$
 		switchMap(([action, state]) => {
 			return concat(
 				user.getUserData().pipe(
-					switchMap((AjaxResponse: any) => {
+					switchMap(() => {
 						const { name, lastName } = action.payload;
 						return concat(of(setUserData({ name, lastName })));
 					}),

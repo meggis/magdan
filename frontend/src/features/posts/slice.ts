@@ -3,30 +3,21 @@
 /* eslint-disable no-restricted-syntax */
 import { createSlice } from '@reduxjs/toolkit';
 import { setPostsData } from './actions';
+import { current } from 'immer';
 
 import { IPostModel } from '../../models/posts/post';
 
 export const initialPost: IPostModel = {
-	postId: '',
-	displayName: '',
-	content: '',
-	author: '',
-	header: '',
+	posts: [],
 };
 
 export const postSlice = createSlice({
-	name: 'postModels',
+	name: 'posts',
 	initialState: initialPost,
 	reducers: {},
 	extraReducers: builder => {
-		builder.addMatcher(setPostsData.match, (state, { payload }) => {
-			state.postId = payload.postId;
-			// state.displayName = payload.displayName;
-			// state.content = payload.content;
-			// state.author = payload.author;
-			// state.header = payload.header;
-		});
+		builder.addMatcher(setPostsData.match, (state, { payload }) => ({ ...state, posts: payload }));
 	},
 });
 
-export const userReducer = postSlice.reducer;
+export const postReducer = postSlice.reducer;
