@@ -42,7 +42,7 @@ const Wrapper = () => {
 	const bg = useColorModeValue('white', 'gray.800');
 
 	return (
-		<Box height="100%" bg={bg} pb="auto" display={loading ? 'flex' : 'block'} alignItems="center">
+		<Box bg={bg} display="block">
 			<BrowserRouter>
 				<Suspense fallback={loader}>
 					<Routes>
