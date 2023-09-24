@@ -34,13 +34,15 @@ const HomePage = () => {
 			{ Header: 'Post Content', accessor: 'content', sortType: (prev: any, curr: any, columnId: any) => sortItems(prev, curr, columnId) },
 			{ Header: 'Post Author', accessor: 'author', sortType: (prev: any, curr: any, columnId: any) => sortItems(prev, curr, columnId) },
 			{ Header: 'Post ID', accessor: 'post_id', sortType: (prev: any, curr: any, columnId: any) => sortItems(prev, curr, columnId) },
+			{ Header: 'Created Date', accessor: 'created_at', sortType: (prev: any, curr: any, columnId: any) => sortItems(prev, curr, columnId) },
 		],
 		[],
 	);
+	const newCreatedDdate = (date: Date) => new Date(date).toLocaleDateString('en-US');
 
 	const revealCharacters = (text: string) => text.substring(0, 20) + '...';
 	const changedTableDataContent = useMemo(() => {
-		return posts.map(post => ({ ...post, content: revealCharacters(post.content) }));
+		return posts.map(post => ({ ...post, content: revealCharacters(post.content), created_at: newCreatedDdate(post.created_at) }));
 	}, [posts]);
 
 	const options: TableOptions<any> = {
