@@ -6,7 +6,6 @@ import { concat, EMPTY, of } from 'rxjs';
 import { AppEpic } from '../../utils/reduxUtils';
 import { checkIfLogged, isLoading, login, logout, setIsLogged } from './actions';
 import { getUserData } from '../user/actions';
-import { getPostsData, setPostsData } from '../posts/actions';
 
 export const Login: AppEpic<ReturnType<typeof login>> = (action$, state$, { authorization }) =>
 	action$.pipe(

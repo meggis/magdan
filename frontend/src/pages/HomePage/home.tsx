@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useAppSelector, useAppDispatch } from '../../utils/reduxUtils';
 import { useEffect, useMemo } from 'react';
 import { getPostsData } from '../../features/posts/actions';
-import { useTable, TableOptions, Column } from 'react-table';
+import { useTable, TableOptions, useSortBy } from 'react-table';
 import { TableContainer, Table, Tbody, Thead, Tr, Td, Th, Tfoot, Flex, Box } from '@chakra-ui/react';
 
 const HomePage = () => {
@@ -17,26 +17,38 @@ const HomePage = () => {
 		}
 	}, []);
 
+	const sortItems = (prev: any, curr: any, columnId: string) => {
+		if (prev.original[columnId].toLowerCase() > curr.original[columnId].toLowerCase()) {
+			return 1;
+		} else if (prev.original[columnId].toLowerCase() < curr.original[columnId].toLowerCase()) {
+			return -1;
+		} else {
+			return 0;
+		}
+	};
+
 	const columns: Array<{ Header: string; accessor: string }> = useMemo(
 		() => [
-			{ Header: 'Post Name', accessor: 'display_name' },
-			{ Header: 'Post Header', accessor: 'header' },
-			{ Header: 'Post Content', accessor: 'content' },
-			{ Header: 'Post Author', accessor: 'author' },
-			{ Header: 'Post ID', accessor: 'post_id' },
+			{ Header: 'Post Name', accessor: 'display_name', sortType: (prev: any, curr: any, columnId: any) => sortItems(prev, curr, columnId) },
+			{ Header: 'Post Header', accessor: 'header', sortType: (prev: any, curr: any, columnId: any) => sortItems(prev, curr, columnId) },
+			{ Header: 'Post Content', accessor: 'content', sortType: (prev: any, curr: any, columnId: any) => sortItems(prev, curr, columnId) },
+			{ Header: 'Post Author', accessor: 'author', sortType: (prev: any, curr: any, columnId: any) => sortItems(prev, curr, columnId) },
+			{ Header: 'Post ID', accessor: 'post_id', sortType: (prev: any, curr: any, columnId: any) => sortItems(prev, curr, columnId) },
 		],
 		[],
 	);
 
 	const revealCharacters = (text: string) => text.substring(0, 20) + '...';
-	const changedTableDataContent = posts.map(post => ({ ...post, content: revealCharacters(post.content) }));
+	const changedTableDataContent = useMemo(() => {
+		return posts.map(post => ({ ...post, content: revealCharacters(post.content) }));
+	}, [posts]);
 
 	const options: TableOptions<any> = {
 		data: changedTableDataContent,
 		columns,
 	};
 
-	const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable(options);
+	const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable(options, useSortBy);
 
 	return (
 		<>
@@ -50,10 +62,18 @@ const HomePage = () => {
 									return (
 										<Tr key={trKey} {...restHeaderGroupProps}>
 											{headerGroup.headers.map(column => {
-												const { key: thKey, ...restColumn } = column.getHeaderProps();
+												const { key: thKey, ...restColumn } = column.getHeaderProps(column.getSortByToggleProps);
 												return (
-													<Th key={thKey} {...restColumn} backgroundColor="blue.300" color="white" borderTop="none">
+													<Th
+														key={thKey}
+														{...restColumn}
+														onClick={() => column.toggleSortBy(!column.isSortedDesc)}
+														backgroundColor="blue.300"
+														color="white"
+														borderTop="none"
+													>
 														{column.render('Header')}
+														<span>{column.isSorted ? (column.isSortedDesc ? ' ▼' : ' ▲') : ''}</span>
 													</Th>
 												);
 											})}
