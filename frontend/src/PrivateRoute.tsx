@@ -26,7 +26,6 @@ const ElementWithNavbar = ({ children, isLogged }: { isLogged: boolean } & Props
 					'.chakra-offset-slide': {
 						height: '100%',
 						flex: 1,
-						'align-self': 'stretch',
 					},
 				}}
 			>

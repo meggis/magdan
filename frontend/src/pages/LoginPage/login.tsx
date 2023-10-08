@@ -17,6 +17,7 @@ const Login = () => {
 			navigate('/', { replace: true });
 		}
 	}, [isLogged]);
+
 	const opacityTime = '1s';
 
 	return (

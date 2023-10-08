@@ -6,43 +6,36 @@ import { useTable, TableOptions, useSortBy } from 'react-table';
 import { TableContainer, Table, Tbody, Thead, Tr, Td, Th, Tfoot, Flex, Box } from '@chakra-ui/react';
 
 const HomePage = () => {
-	const { isLogged } = useAppSelector(state => state.authorization);
-	const { posts } = useAppSelector(state => state.posts);
+	const { posts, loadingPosts } = useAppSelector(state => state.posts);
 	const dispatch = useAppDispatch();
-	const userToken = localStorage.getItem('token');
-
-	useEffect(() => {
-		if (isLogged) {
-			dispatch(getPostsData({ token: userToken as string }));
-		}
-	}, []);
 
 	const sortItems = (prev: any, curr: any, columnId: string) => {
-		if (prev.original[columnId].toLowerCase() > curr.original[columnId].toLowerCase()) {
-			return 1;
-		} else if (prev.original[columnId].toLowerCase() < curr.original[columnId].toLowerCase()) {
-			return -1;
-		} else {
-			return 0;
-		}
+		const prevValue = prev.original[columnId].toLowerCase();
+		const currlValue = curr.original[columnId].toLowerCase();
+
+		return prevValue === currlValue ? 0 : prevValue < currlValue ? -1 : 1;
 	};
+
+	useEffect(() => {
+		dispatch(getPostsData());
+	}, []);
 
 	const columns: Array<{ Header: string; accessor: string }> = useMemo(
 		() => [
-			{ Header: 'Post Name', accessor: 'display_name', sortType: (prev: any, curr: any, columnId: any) => sortItems(prev, curr, columnId) },
-			{ Header: 'Post Header', accessor: 'header', sortType: (prev: any, curr: any, columnId: any) => sortItems(prev, curr, columnId) },
-			{ Header: 'Post Content', accessor: 'content', sortType: (prev: any, curr: any, columnId: any) => sortItems(prev, curr, columnId) },
-			{ Header: 'Post Author', accessor: 'author', sortType: (prev: any, curr: any, columnId: any) => sortItems(prev, curr, columnId) },
-			{ Header: 'Post ID', accessor: 'post_id', sortType: (prev: any, curr: any, columnId: any) => sortItems(prev, curr, columnId) },
-			{ Header: 'Created Date', accessor: 'created_at', sortType: (prev: any, curr: any, columnId: any) => sortItems(prev, curr, columnId) },
+			{ Header: 'Post Name', accessor: 'display_name', sortType: sortItems },
+			{ Header: 'Post Header', accessor: 'header', sortType: sortItems },
+			{ Header: 'Post Content', accessor: 'content', sortType: sortItems },
+			{ Header: 'Post Author', accessor: 'author', sortType: sortItems },
+			{ Header: 'Post ID', accessor: 'post_id', sortType: sortItems },
+			{ Header: 'Created Date', accessor: 'created_at', sortType: sortItems },
 		],
-		[],
+		[posts],
 	);
 	const newCreatedDdate = (date: Date) => new Date(date).toLocaleDateString('en-US');
 
 	const revealCharacters = (text: string) => text.substring(0, 20) + '...';
 	const changedTableDataContent = useMemo(() => {
-		return posts.map(post => ({ ...post, content: revealCharacters(post.content), created_at: newCreatedDdate(post.created_at) }));
+		return posts.map((post: any) => ({ ...post, content: revealCharacters(post.content), created_at: newCreatedDdate(post.created_at) }));
 	}, [posts]);
 
 	const options: TableOptions<any> = {
@@ -55,7 +48,7 @@ const HomePage = () => {
 	return (
 		<>
 			<Box display="block" alignItems="center">
-				{posts.length ? (
+				{!loadingPosts ? (
 					<TableContainer>
 						<Table {...getTableProps()} variant="simple" size="md">
 							<Thead>

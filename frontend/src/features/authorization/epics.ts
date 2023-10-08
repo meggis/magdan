@@ -5,7 +5,7 @@ import { catchError, delay, filter, switchMap, withLatestFrom, mergeMap } from '
 import { concat, EMPTY, of } from 'rxjs';
 import { AppEpic } from '../../utils/reduxUtils';
 import { checkIfLogged, isLoading, login, logout, setIsLogged } from './actions';
-import { getUserData } from '../user/actions';
+import { setUserData } from '../user/actions';
 
 export const Login: AppEpic<ReturnType<typeof login>> = (action$, state$, { authorization }) =>
 	action$.pipe(
@@ -21,7 +21,7 @@ export const Login: AppEpic<ReturnType<typeof login>> = (action$, state$, { auth
 						return concat(
 							of(isLoading(false)),
 							of(setIsLogged({ isLogged: true })),
-							of(getUserData({ name: response.first_name, lastName: response.last_name })),
+							of(setUserData({ name: response.first_name, lastName: response.last_name })),
 						);
 					}),
 					catchError((err: any) => {
