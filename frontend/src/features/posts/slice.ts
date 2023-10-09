@@ -2,13 +2,14 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable no-restricted-syntax */
 import { createSlice } from '@reduxjs/toolkit';
-import { setPostsData } from './actions';
+import { isLoadingPosts, setPostsData } from './actions';
 import { current } from 'immer';
 
-import { IPostModel } from '../../models/posts/post';
+import { IPostsModel } from '../../models/posts/post';
 
-export const initialPost: IPostModel = {
+export const initialPost: IPostsModel = {
 	posts: [],
+	loadingPosts: true,
 };
 
 export const postSlice = createSlice({
@@ -16,7 +17,13 @@ export const postSlice = createSlice({
 	initialState: initialPost,
 	reducers: {},
 	extraReducers: builder => {
-		builder.addMatcher(setPostsData.match, (state, { payload }) => ({ ...state, posts: payload }));
+		builder.addMatcher(setPostsData.match, (state, { payload }) => ({
+			...state,
+			posts: payload,
+		}));
+		builder.addMatcher(isLoadingPosts.match, (state, { payload }) => {
+			state.loadingPosts = payload;
+		});
 	},
 });
 
