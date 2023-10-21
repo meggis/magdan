@@ -17,6 +17,7 @@ const Login = () => {
 			navigate('/', { replace: true });
 		}
 	}, [isLogged]);
+
 	const opacityTime = '1s';
 
 	return (
@@ -94,6 +95,7 @@ const Login = () => {
 													}}
 													bg="white"
 													placeholder="Login"
+													name="login"
 												/>
 												<Input
 													id="2"
@@ -105,12 +107,13 @@ const Login = () => {
 													}}
 													bg="white"
 													placeholder="Password"
+													name="password"
 												/>
 											</InputGroup>
 											<FormErrorMessage pos="absolute">Invalid password or login</FormErrorMessage>
 										</FormControl>
 										<Button
-											isDisabled={loading || !loginData.password}
+											isDisabled={loading || !loginData.password || !loginData.user}
 											isLoading={loading}
 											type="submit"
 											onClick={() => {

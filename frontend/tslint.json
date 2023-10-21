@@ -25,6 +25,8 @@
     "ordered-imports": false,
     "no-string-literal": false,
     "jsx-no-lambda": false,
-    "jsx-boolean-value": false
+    "jsx-boolean-value": false,
+    "interface-name": false,
+    "member-access": [true, "no-public"]
   }
 }
