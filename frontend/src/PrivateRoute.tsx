@@ -26,12 +26,11 @@ const ElementWithNavbar = ({ children, isLogged }: { isLogged: boolean } & Props
 					'.chakra-offset-slide': {
 						height: '100%',
 						flex: 1,
-						'align-self': 'stretch',
 					},
 				}}
 			>
 				<Navbar />
-				<Container p="5" flex="1" maxW="full" display="flex" alignItems="center" bg="var(--chakra-colors-bg-canvas)">
+				<Container p="5" flex="1" maxW="full" display="block" alignItems="center" bg="var(--chakra-colors-bg-canvas)">
 					{children}
 				</Container>
 			</Flex>

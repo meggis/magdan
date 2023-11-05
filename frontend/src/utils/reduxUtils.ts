@@ -3,6 +3,7 @@ import { Epic } from 'redux-observable';
 import { Action } from 'redux';
 import store from '../appConfig/store';
 import services from '../services';
+import { IRedux } from '../models/redux';
 type Services = typeof services;
 
 export type AppDispatch = typeof store.dispatch;

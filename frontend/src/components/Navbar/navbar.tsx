@@ -16,14 +16,14 @@ import {
 	useColorModeValue,
 } from '@chakra-ui/react';
 import * as React from 'react';
+import { useEffect, useState } from 'react';
 import { FiSearch } from 'react-icons/fi';
 import { useAppSelector, useAppDispatch } from '../../utils/reduxUtils';
-import avatarImage from './avatar.png';
 import { Link as ReactLink, useLocation } from 'react-router-dom';
 import { logout } from '../../features/authorization/actions';
 
 export const Navbar = () => {
-	const { user } = useAppSelector(state => state.user);
+	const { name } = useAppSelector(state => state.user);
 	const dispatch = useAppDispatch();
 
 	const handleLogout = () => {
@@ -31,6 +31,10 @@ export const Navbar = () => {
 	};
 
 	const { pathname } = useLocation();
+
+	const greeting = () => {
+		return `Hello, ${name}`;
+	};
 
 	return (
 		<Box as="section">
@@ -56,9 +60,8 @@ export const Navbar = () => {
 								<IconButton icon={<FiSearch fontSize="1.25rem" />} aria-label="Search" />
 							</ButtonGroup>
 							<Menu>
-								<MenuButton>
-									<Avatar cursor="pointer" src={avatarImage} boxSize="10" name={user} />
-								</MenuButton>
+								{name && greeting()}
+								<MenuButton>{name && <Avatar cursor="pointer" bg="blue.300" name={name} color="white" />}</MenuButton>
 								<Portal>
 									<MenuList p="0">
 										<MenuItem onClick={handleLogout}>Logout</MenuItem>
