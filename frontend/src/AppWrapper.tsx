@@ -8,6 +8,7 @@ import Login from './pages/LoginPage/login';
 import { useAppDispatch, useAppSelector } from './utils/reduxUtils';
 import { checkIfLogged } from './features/authorization/actions';
 import { Box, Flex, Spinner, useColorModeValue } from '@chakra-ui/react';
+import SinglePost from './components/Posts/Post';
 
 const pages = [
 	{
@@ -22,6 +23,16 @@ export const privatePages = [
 		element: <HomePage />,
 		// example
 		// additionalPath: [{ path: ':id', element: <Account /> }],
+		additionalPath: [],
+	},
+	{
+		path: `/posts/post/:id`,
+		element: <SinglePost />,
+		additionalPath: [],
+	},
+	{
+		path: `/posts/post/`,
+		element: <SinglePost />,
 		additionalPath: [],
 	},
 ].map((item, index) => ({ ...item, id: `path_${index + 1}_${item.path}` }));
