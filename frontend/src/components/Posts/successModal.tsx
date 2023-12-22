@@ -1,38 +1,35 @@
-import { Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Text, Flex } from '@chakra-ui/react';
+import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, Text, Flex } from '@chakra-ui/react';
 import { useDisclosure } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../utils/reduxUtils';
 import { useEffect, useState } from 'react';
 
-type ISuccessModal = {
-	isClicked: boolean;
-};
+interface SuccessModal {
+	isSubmitted: boolean;
+}
 
-export const SuccessModal = ({ isClicked }: ISuccessModal) => {
+export const SuccessModal = ({ isSubmitted }: SuccessModal) => {
 	const { success } = useAppSelector(state => state.posts);
-	const [successModal, setSuccessModal] = useState(false);
-	let [count, setCount] = useState(5);
-	const { isOpen, onOpen, onClose } = useDisclosure({ isOpen: isClicked });
-	let navigate = useNavigate();
-	console.log(success);
+	const [count, setCount] = useState(5);
+	const { isOpen, onClose } = useDisclosure({ isOpen: success });
+	const navigate = useNavigate();
 
 	useEffect(() => {
-		if (isClicked && success) {
-			console.log('success', new Date());
-			setSuccessModal(true);
+		if (isSubmitted && success) {
 			const timer = setTimeout(() => {
 				navigate('/');
 			}, 5000);
-			if (!count) return;
+			if (!count) {
+				return;
+			}
 			setInterval(() => {
-				setCount(count => count - 1);
+				setCount(prevCount => prevCount - 1);
 			}, 1000);
 			return () => {
 				clearTimeout(timer);
-				setSuccessModal(false);
 			};
 		}
-	}, [isClicked, success]);
+	}, [isSubmitted, success]);
 
 	return (
 		<>

@@ -4,15 +4,22 @@ import { getPostData, updatePostData, createPostData } from '../../features/post
 import { useAppDispatch, useAppSelector } from '../../utils/reduxUtils';
 import { useParams } from 'react-router-dom';
 import { Textarea, Text, Divider, Box, Flex, ButtonGroup, Button, Spinner, Highlight } from '@chakra-ui/react';
+import { ErrorMessage } from '@hookform/error-message';
+import { WarningIcon } from '@chakra-ui/icons';
 import { newCreatedDdate } from '../../utils/helperFunctions';
 import { ConfirmModal } from './confirmModal';
 import { useForm } from 'react-hook-form';
 import { SuccessModal } from './successModal';
 
+interface FormInputs {
+	post_content: string;
+	post_name: string;
+	post_header: string;
+}
+
 const SinglePost = () => {
 	const { post, loadingPost } = useAppSelector(state => state.posts);
 	const { display_name, header, content, updated_at } = post;
-	const [isSubmitClicked, setIsSubmitClicked] = useState(false);
 	const dispatch = useAppDispatch();
 	const { id } = useParams();
 	const {
@@ -21,17 +28,23 @@ const SinglePost = () => {
 		handleSubmit,
 		setValue,
 		formState: { errors, isDirty, isSubmitted },
-	} = useForm();
+	} = useForm<FormInputs>({
+		criteriaMode: 'all',
+		mode: 'onChange',
+		defaultValues: {
+			post_name: '',
+			post_content: '',
+			post_header: '',
+		},
+	});
 	const ref: any = React.useRef();
 	const onSubmit = (value: any) => {
-		setIsSubmitClicked(true);
 		if (!id) {
 			dispatch(createPostData({ value: { ...post, content: value.post_content, display_name: value.post_name, header: value.post_header }, reset }));
 		} else {
 			dispatch(updatePostData({ value: { ...post, content: value.post_content, display_name: value.post_name, header: value.post_header }, reset }));
 		}
 	};
-	// console.log(post)
 
 	useEffect(() => {
 		if (id) {
@@ -58,13 +71,25 @@ const SinglePost = () => {
 					</Text>
 					<Textarea
 						defaultValue={display_name}
-						id={'post_name'}
+						id="post_name"
 						{...register('post_name', {
 							required: 'This field is required',
 						})}
 						placeholder="Here is a sample placeholder"
 						size="sm"
 					/>
+					{isSubmitted ? (
+						<ErrorMessage
+							errors={errors}
+							name="post_name"
+							render={({ message }) => (
+								<Text color="red" mt="8px" ml="10px" fontSize="sm">
+									<WarningIcon w={5} h={5} color="red.500" mr="10px" />
+									{message}
+								</Text>
+							)}
+						/>
+					) : null}
 					<Text mb="10px" mt="30px" fontSize="lg">
 						Post Header
 					</Text>
@@ -77,6 +102,18 @@ const SinglePost = () => {
 						placeholder="Here is a sample placeholder"
 						size="sm"
 					/>
+					{isSubmitted ? (
+						<ErrorMessage
+							errors={errors}
+							name="post_header"
+							render={({ message }) => (
+								<Text color="red" mt="8px" ml="10px" fontSize="sm">
+									<WarningIcon w={5} h={5} color="red.500" mr="10px" />
+									{message}
+								</Text>
+							)}
+						/>
+					) : null}
 					<Text mb="10px" mt="30px" fontSize="lg">
 						Post Content
 					</Text>
@@ -89,6 +126,18 @@ const SinglePost = () => {
 						placeholder="Here is a sample placeholder"
 						size="sm"
 					/>
+					{isSubmitted ? (
+						<ErrorMessage
+							errors={errors}
+							name="post_content"
+							render={({ message }) => (
+								<Text color="red" mt="8px" ml="10px" fontSize="sm">
+									<WarningIcon w={5} h={5} color="red.500" mr="10px" />
+									{message}
+								</Text>
+							)}
+						/>
+					) : null}
 					{id ? (
 						<>
 							<Divider mb="10" mt="10" colorScheme="blue.300" />
@@ -108,12 +157,12 @@ const SinglePost = () => {
 			)}
 			<Box mt="60px">
 				<ButtonGroup gap="4">
-					<Button colorScheme="blue" variant="solid" type="submit">
+					<Button colorScheme="blue" variant="solid" type="submit" isDisabled={!isDirty}>
 						Save changes
 					</Button>
 					<ConfirmModal header="Sure want to go back?" content="Any changes won't be saved." isReturn={true} />
 				</ButtonGroup>
-				<SuccessModal isClicked={isSubmitClicked} />
+				<SuccessModal isSubmitted={isSubmitted} />
 			</Box>
 		</form>
 	);
