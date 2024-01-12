@@ -2,8 +2,7 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable no-restricted-syntax */
 import { createSlice } from '@reduxjs/toolkit';
-import { isLoadingPosts, setPostsData, setPostData, deletePostData, isLoadingPost, createPostData, isSuccessfullyPosted } from './actions';
-import { current } from 'immer';
+import { isLoadingPosts, setPostsData, setPostData, deletePostData, isLoadingPost, createPostData, updatePostData } from './actions';
 
 import { IPostsModel } from '../../models/posts/post';
 
@@ -12,7 +11,6 @@ export const initialPost: IPostsModel = {
 	post: {},
 	loadingPosts: true,
 	loadingPost: false,
-	success: false,
 };
 
 export const postsSlice = createSlice({
@@ -42,9 +40,10 @@ export const postsSlice = createSlice({
 			...state,
 			post: payload,
 		}));
-		builder.addMatcher(isSuccessfullyPosted.match, (state, { payload }) => {
-			state.success = payload;
-		});
+		builder.addMatcher(updatePostData.match, (state, { payload }) => ({
+			...state,
+			post: payload,
+		}));
 	},
 });
 

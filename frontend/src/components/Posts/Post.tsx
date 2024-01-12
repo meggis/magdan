@@ -1,15 +1,15 @@
 import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { getPostData, updatePostData, createPostData } from '../../features/posts/actions';
 import { useAppDispatch, useAppSelector } from '../../utils/reduxUtils';
-import { useParams } from 'react-router-dom';
-import { Textarea, Text, Divider, Box, Flex, ButtonGroup, Button, Spinner, Highlight } from '@chakra-ui/react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useToast, Textarea, Text, Divider, Box, Flex, ButtonGroup, Button, Spinner, Highlight } from '@chakra-ui/react';
 import { ErrorMessage } from '@hookform/error-message';
 import { WarningIcon } from '@chakra-ui/icons';
 import { newCreatedDdate } from '../../utils/helperFunctions';
 import { ConfirmModal } from './confirmModal';
 import { useForm } from 'react-hook-form';
-import { SuccessModal } from './successModal';
+import { useAsyncDebounce } from 'react-table';
 
 interface FormInputs {
 	post_content: string;
@@ -20,6 +20,7 @@ interface FormInputs {
 const SinglePost = () => {
 	const { post, loadingPost } = useAppSelector(state => state.posts);
 	const { display_name, header, content, updated_at } = post;
+	const navigate = useNavigate();
 	const dispatch = useAppDispatch();
 	const { id } = useParams();
 	const {
@@ -31,20 +32,16 @@ const SinglePost = () => {
 	} = useForm<FormInputs>({
 		criteriaMode: 'all',
 		mode: 'onChange',
-		defaultValues: {
-			post_name: '',
-			post_content: '',
-			post_header: '',
-		},
 	});
-	const ref: any = React.useRef();
-	const onSubmit = (value: any) => {
+	const ref = React.useRef<HTMLFormElement>(null);
+	const toast = useToast();
+	const onSubmit = useAsyncDebounce(({ post_content, post_name, post_header }: FormInputs) => {
 		if (!id) {
-			dispatch(createPostData({ value: { ...post, content: value.post_content, display_name: value.post_name, header: value.post_header }, reset }));
+			dispatch(createPostData({ post_content, post_name, post_header, reset, navigate, toast }));
 		} else {
-			dispatch(updatePostData({ value: { ...post, content: value.post_content, display_name: value.post_name, header: value.post_header }, reset }));
+			dispatch(updatePostData({ post_content, post_name, post_header, post_id: id, reset, navigate, toast }));
 		}
-	};
+	}, 150);
 
 	useEffect(() => {
 		if (id) {
@@ -162,7 +159,6 @@ const SinglePost = () => {
 					</Button>
 					<ConfirmModal header="Sure want to go back?" content="Any changes won't be saved." isReturn={true} />
 				</ButtonGroup>
-				<SuccessModal isSubmitted={isSubmitted} />
 			</Box>
 		</form>
 	);

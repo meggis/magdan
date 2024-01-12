@@ -3,5 +3,4 @@ export interface IPostsModel {
 	loadingPosts: boolean;
 	loadingPost: boolean;
 	post: {};
-	success: boolean;
 }

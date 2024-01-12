@@ -22,7 +22,7 @@ export const getPostData = (id: any) => {
 	});
 };
 
-export const updatePostData = (body: SetPosts) => {
+export const updatePostData = (body: { post_id: string }) => {
 	return ajax({
 		url: `${process.env.REACT_APP_API_URL}/posts/post/${body.post_id}/`,
 		method: 'PUT',

@@ -2,34 +2,37 @@ import * as React from 'react';
 import { useAppSelector, useAppDispatch } from '../../utils/reduxUtils';
 import { useEffect, useMemo, useState } from 'react';
 import { getPostsData, deletePostData } from '../../features/posts/actions';
-import { useTable, TableOptions, useSortBy } from 'react-table';
-import { TableContainer, Table, Tbody, Thead, Tr, Td, Th, Tfoot, Flex, Box, Button, Wrap } from '@chakra-ui/react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useTable, TableOptions, useSortBy, useAsyncDebounce } from 'react-table';
+import { useToast, TableContainer, Table, Tbody, Thead, Tr, Td, Th, Tfoot, Flex, Box, Button, Wrap, Spinner } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 import { newCreatedDdate } from '../../utils/helperFunctions';
 import { ConfirmModal } from '../Posts/confirmModal';
+import { IPostsModel } from '../../models/posts/post';
+import './PostsDashboard.css';
 
 const PostsDashboard = () => {
 	const { posts, loadingPosts } = useAppSelector(state => state.posts);
-	const [newPosts, setNewPosts] = useState<object[]>([]);
+	const [newPosts, setNewPosts] = useState<IPostsModel['posts']>([]);
 	const dispatch = useAppDispatch();
-	let navigate = useNavigate();
+	const navigate = useNavigate();
+	const toast = useToast();
 	const sortItems = (prev: any, curr: any, columnId: string) => {
 		const prevValue = prev.original[columnId].toLowerCase();
 		const currlValue = curr.original[columnId].toLowerCase();
-		
+
 		return prevValue === currlValue ? 0 : prevValue < currlValue ? -1 : 1;
 	};
-	
-	useEffect(() => {
-			dispatch(getPostsData());
-			setNewPosts(posts);
-		}, []);
 
 	useEffect(() => {
-		if (posts) {
-			setNewPosts(posts);
+		dispatch(getPostsData());
+	}, []);
+
+	useEffect(() => {
+		if (!posts) {
+			return;
 		}
-		}, [posts]);
+		setNewPosts(posts);
+	}, [posts]);
 
 	const columns: Array<{ Header: string; accessor: string }> = useMemo(
 		() => [
@@ -43,12 +46,10 @@ const PostsDashboard = () => {
 		],
 		[posts],
 	);
-	
-	const handleDelete = (data: any) => {
-		dispatch(deletePostData({ post_id: data.post_id }));
-		const dataCopy = newPosts.filter((post: any) => post.post_id !== data.post_id);
-		setNewPosts(dataCopy);
-	};
+
+	const handleDelete = useAsyncDebounce(data => {
+		dispatch(deletePostData({ post_id: data.post_id, toast }));
+	}, 250);
 
 	const editPostButton = (singlePost: any) => {
 		return (
@@ -61,12 +62,10 @@ const PostsDashboard = () => {
 		);
 	};
 
-	const revealCharacters = (text: string) => text?.length > 20 ? text?.substring(0, 20) + '...' : text;
 	const changedTableDataContent = useMemo(() => {
-
 		return newPosts.map((post: any) => ({
 			...post,
-			content: revealCharacters(post.content),
+			content: post.content,
 			created_at: newCreatedDdate(post.created_at),
 			actions: editPostButton(post),
 		}));
@@ -76,15 +75,25 @@ const PostsDashboard = () => {
 		data: changedTableDataContent,
 		columns,
 	};
-
 	const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable(options, useSortBy);
 
 	return (
 		<>
 			<Box display="block" alignItems="center">
-				{!loadingPosts ? (
-					<>
-				<Button backgroundColor="#e8bc14" mt="30px" mb="30px" size="lg" _hover={{ backgroundColor: '#d1a912' }} color='white' onClick={() => navigate(`posts/post/`)}>+ Add new post</Button>
+				<Button
+					backgroundColor="#e8bc14"
+					mt="30px"
+					mb="30px"
+					size="lg"
+					_hover={{ backgroundColor: '#d1a912' }}
+					color="white"
+					onClick={() => navigate(`posts/post/`)}
+				>
+					+ Add new post
+				</Button>
+			</Box>
+			{!loadingPosts ? (
+				<Box display="block" alignItems="center">
 					<TableContainer>
 						<Table {...getTableProps()} variant="simple" size="md">
 							<Thead>
@@ -121,7 +130,13 @@ const PostsDashboard = () => {
 												const { key: trBodyKey, ...restHeaderGroupProps } = cell.getCellProps();
 												return (
 													<Td key={trBodyKey} {...restHeaderGroupProps}>
-														{cell.render('Cell')}
+														{cell.value.length > 20 && cell.column.Header === 'Post Content' ? (
+															<div title={cell.value} className="make_elipsis">
+																{cell.render('Cell')}
+															</div>
+														) : (
+															cell.render('Cell')
+														)}
 													</Td>
 												);
 											})}
@@ -131,13 +146,12 @@ const PostsDashboard = () => {
 							</Tbody>
 						</Table>
 					</TableContainer>
-					</>
-				) : (
-					<Flex justifyContent="center" w="100%" h="20vh" alignItems="center">
-						<div>Loading data...</div>
-					</Flex>
-				)}
-			</Box>
+				</Box>
+			) : (
+				<Flex justifyContent="center" w="100%" h="20vh" alignItems="center">
+					<div>Loading data...</div>
+				</Flex>
+			)}
 		</>
 	);
 };

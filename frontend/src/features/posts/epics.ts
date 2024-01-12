@@ -10,10 +10,9 @@ import {
 	deletePostData,
 	isLoadingPost,
 	createPostData,
-	isSuccessfullyPosted,
 } from './actions';
 import { concat, of } from 'rxjs';
-import { catchError, filter, switchMap, withLatestFrom } from 'rxjs/operators';
+import { catchError, filter, switchMap, withLatestFrom, mergeMap } from 'rxjs/operators';
 
 export const GetPostsEpic: AppEpic<ReturnType<typeof getPostsData>> = (action$, state$, { posts }) =>
 	action$.pipe(
@@ -22,7 +21,6 @@ export const GetPostsEpic: AppEpic<ReturnType<typeof getPostsData>> = (action$, 
 		switchMap(([action, state]) => {
 			return concat(
 				of(isLoadingPosts(true)),
-				of(isSuccessfullyPosted(false)),
 				posts.getPostsData().pipe(
 					switchMap((PostsAjaxResponse: any) => {
 						const { response } = PostsAjaxResponse;
@@ -49,7 +47,7 @@ export const GetPostEpic: AppEpic<ReturnType<typeof getPostData>> = (action$, st
 						return concat(of(isLoadingPost(false)), of(setPostData(response.data)));
 					}),
 					catchError((err: any) => {
-						return concat(of(isLoadingPost(false)), of(setPostData(err)));
+						return concat(of(isLoadingPost(false)));
 					}),
 				),
 			);
@@ -61,16 +59,35 @@ export const UpdatePostEpic: AppEpic<ReturnType<typeof updatePostData>> = (actio
 		filter(updatePostData.match),
 		withLatestFrom(state$),
 		switchMap(([action, state]) => {
+			const body = {
+				header: action.payload.post_header,
+				content: action.payload.post_content,
+				display_name: action.payload.post_name,
+				post_id: action.payload.post_id,
+			};
 			return concat(
 				of(isLoadingPost(true)),
-				post.updatePostData(action.payload.value).pipe(
+				post.updatePostData(body).pipe(
 					switchMap((PostsAjaxResponse: any) => {
 						const { response } = PostsAjaxResponse;
 						action.payload.reset();
-						return concat(of(isLoadingPost(false)), of(setPostData(response.data)));
+						action.payload.toast({
+							title: "You've successfully updated your item!",
+							status: 'success',
+							isClosable: true,
+						});
+						if (action.payload.navigate) {
+							action.payload.navigate('/');
+						}
+						return concat(of(isLoadingPost(false)), of(setPostData(response)));
 					}),
 					catchError((err: any) => {
-						return concat(of(isLoadingPost(false)), of(setPostData(err)));
+						action.payload.toast({
+							title: 'Sth went wrong. Please try again',
+							status: 'error',
+							isClosable: true,
+						});
+						return concat(of(isLoadingPost(false)));
 					}),
 				),
 			);
@@ -83,14 +100,25 @@ export const DeletePostEpic: AppEpic<ReturnType<typeof deletePostData>> = (actio
 		withLatestFrom(state$),
 		switchMap(([action, state]) => {
 			return concat(
-				of(isLoadingPost(true)),
+				of(isLoadingPosts(true)),
 				posts.deletePostData(action.payload.post_id).pipe(
 					switchMap((PostsAjaxResponse: any) => {
 						const response = PostsAjaxResponse;
-						return concat(of(isLoadingPost(false)), of(setPostData(response)));
+						const remainItems = state.posts.posts.filter((post: any) => post.post_id !== action.payload.post_id);
+						action.payload.toast({
+							title: "You've successfully deleted your item!",
+							status: 'success',
+							isClosable: true,
+						});
+						return concat(of(isLoadingPosts(false)), of(setPostData(response)), of(setPostsData(remainItems)));
 					}),
 					catchError((err: any) => {
-						return concat(of(isLoadingPost(false)), of(setPostData(err)));
+						action.payload.toast({
+							title: 'Sth went wrong. Please try again',
+							status: 'error',
+							isClosable: true,
+						});
+						return concat(of(isLoadingPosts(false)));
 					}),
 				),
 			);
@@ -102,16 +130,29 @@ export const CreatePostEpic: AppEpic<ReturnType<typeof createPostData>> = (actio
 		filter(createPostData.match),
 		withLatestFrom(state$),
 		switchMap(([action, state]) => {
-			const body = { header: action.payload.value.header, content: action.payload.value.content, display_name: action.payload.value.display_name };
+			const body = { header: action.payload.post_header, content: action.payload.post_content, display_name: action.payload.post_name };
 			return concat(
 				of(isLoadingPost(true)),
 				post.createPostData(body).pipe(
 					switchMap((PostsAjaxResponse: any) => {
 						const response = PostsAjaxResponse;
-						return concat(of(isLoadingPost(false)), of(setPostData(response)), of(isSuccessfullyPosted(true)));
+						action.payload.toast({
+							title: "You've successfully created your item!",
+							status: 'success',
+							isClosable: true,
+						});
+						if (action.payload.navigate) {
+							action.payload.navigate('/');
+						}
+						return concat(of(isLoadingPost(false)), of(setPostData(response)));
 					}),
 					catchError((err: any) => {
-						return concat(of(isLoadingPost(false)), of(setPostData(err)), of(isSuccessfullyPosted(false)));
+						action.payload.toast({
+							title: 'Sth went wrong. Please try again',
+							status: 'success',
+							isClosable: true,
+						});
+						return concat(of(isLoadingPost(false)));
 					}),
 				),
 			);

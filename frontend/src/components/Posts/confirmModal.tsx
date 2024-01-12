@@ -2,20 +2,24 @@ import { Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, Mo
 import { useDisclosure } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 
-type IModel = {
+interface IModel {
 	content: string;
 	header: string;
 	isReturn: boolean;
-	onClick?: Function;
-};
+	onClick?: () => void;
+}
 
 export const ConfirmModal = ({ content, header, isReturn, onClick }: IModel) => {
 	const { isOpen, onOpen, onClose } = useDisclosure();
-	let navigate = useNavigate();
+	const navigate = useNavigate();
 
 	const handleModalOperationOnClick = () => {
-		if (isReturn) navigate('/');
-		if (onClick) onClick(), onClose();
+		if (isReturn) {
+			navigate('/');
+		}
+		if (onClick) {
+			onClick(), onClose();
+		}
 	};
 
 	return (
