@@ -2,13 +2,15 @@ import * as React from 'react';
 import { useAppSelector, useAppDispatch } from '../../utils/reduxUtils';
 import { useEffect, useMemo, useState } from 'react';
 import { getPostsData, deletePostData } from '../../features/posts/actions';
-import { useTable, TableOptions, useSortBy, useAsyncDebounce } from 'react-table';
-import { useToast, TableContainer, Table, Tbody, Thead, Tr, Td, Th, Tfoot, Flex, Box, Button, Wrap, Spinner } from '@chakra-ui/react';
+import { useTable, TableOptions, useSortBy, useAsyncDebounce, usePagination } from 'react-table';
+import { useToast, TableContainer, Table, Tbody, Thead, Tr, Td, Th, Text, Flex, Box, Button, Wrap, Center } from '@chakra-ui/react';
+import { ArrowRightIcon, ArrowLeftIcon, ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons';
 import { useNavigate } from 'react-router-dom';
 import { newCreatedDdate } from '../../utils/helperFunctions';
 import { ConfirmModal } from '../Posts/confirmModal';
 import { IPostsModel } from '../../models/posts/post';
 import './PostsDashboard.css';
+// import Pagination from './Pagination';
 
 const PostsDashboard = () => {
 	const { posts, loadingPosts } = useAppSelector(state => state.posts);
@@ -75,7 +77,20 @@ const PostsDashboard = () => {
 		data: changedTableDataContent,
 		columns,
 	};
-	const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable(options, useSortBy);
+	const {
+		getTableProps,
+		getTableBodyProps,
+		headerGroups,
+		page,
+		prepareRow,
+		nextPage,
+		previousPage,
+		canNextPage,
+		canPreviousPage,
+		state: { pageIndex },
+		pageCount,
+		gotoPage,
+	} = useTable(options, useSortBy, usePagination);
 
 	return (
 		<>
@@ -122,11 +137,11 @@ const PostsDashboard = () => {
 								})}
 							</Thead>
 							<Tbody {...getTableBodyProps()}>
-								{rows.map((row, idx) => {
+								{page.map((row: any, idx: number) => {
 									prepareRow(row);
 									return (
 										<Tr {...row.getRowProps()} key={idx}>
-											{row.cells.map(cell => {
+											{row.cells.map((cell: any) => {
 												const { key: trBodyKey, ...restHeaderGroupProps } = cell.getCellProps();
 												return (
 													<Td key={trBodyKey} {...restHeaderGroupProps}>
@@ -145,6 +160,23 @@ const PostsDashboard = () => {
 								})}
 							</Tbody>
 						</Table>
+						<Center mt={6}>
+							<Button isDisabled={pageIndex === 0} onClick={() => gotoPage(0)}>
+								{'<<'}
+							</Button>
+							<Button isDisabled={!canPreviousPage} onClick={previousPage} backgroundColor="blue.300" color="white">
+								{'<'}
+							</Button>
+							<Box ml={6} mr={6}>
+								{pageIndex + 1} of {pageCount}
+							</Box>
+							<Button isDisabled={!canNextPage} onClick={nextPage} backgroundColor="blue.300" color="white">
+								{'>'}
+							</Button>
+							<Button isDisabled={pageIndex === pageCount - 1} onClick={() => gotoPage(pageCount - 1)}>
+								{'>>'}
+							</Button>
+						</Center>
 					</TableContainer>
 				</Box>
 			) : (
